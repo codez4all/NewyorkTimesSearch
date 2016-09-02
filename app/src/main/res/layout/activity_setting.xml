@@ -10,4 +10,115 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.sheetal.newyorktimessearch.Activities.SettingActivity">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ll1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/BeginDate"
+            android:id="@+id/tvBeginDate"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/etDatePicker"
+            android:layout_marginStart="65dp"
+            android:onClick="showDatePicketDialog"
+            android:hint="@string/hintDatePicker"/>
+
+       <!-- <DatePicker
+            android:layout_width="250dp"
+            android:layout_height="400dp"
+            android:id="@+id/datePicker"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="45dp"/> -->
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ll2"
+        android:layout_below="@+id/ll1"
+        android:layout_toEndOf="@+id/ll3"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tvSortOrder"
+            android:id="@+id/tvSortOrder"/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinSortOrder"
+            android:layout_marginStart="65dp"
+            android:entries="@array/sort_Array"/>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/ll3"
+        android:layout_below="@+id/ll2">
+
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tvDeskValues"
+        android:id="@+id/tvDeskValues"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkbox_arts"
+            android:text="@string/chkArts"
+            android:layout_marginStart="20dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkbox_fashtionStyle"
+            android:text="@string/chkFashionStyle"
+            android:layout_marginStart="20dp"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkbox_sports"
+            android:text="@string/chkSports"
+            android:layout_marginStart="20dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btnSave"
+        android:id="@+id/btnSave"
+        android:layout_below="@+id/ll3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"/>
+
+
 </RelativeLayout>

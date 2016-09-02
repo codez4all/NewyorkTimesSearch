@@ -39,7 +39,9 @@
         android:id="@+id/btnSearch"
         android:layout_alignTop="@+id/etQuery"
         android:layout_alignParentEnd="true"
-        android:onClick="onArticleSearch"/>
+        android:onClick="onArticleSearch"
+        android:background="@color/colorPurple"
+        android:textColor="@color/colorWhite"/>
 
     <GridView
         android:layout_width="wrap_content"

@@ -3,4 +3,13 @@
     <string name="hint">Enter Search Query</string>
     <string name="Search">Search</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="BeginDate">Begin date</string>
+    <string name="tvSortOrder">Sort Order</string>
+    <string name="tvDeskValues">New Desk Values</string>
+    <string name="etDatePicker">Date Picker</string>
+    <string name="hintDatePicker">Select Date</string>
+    <string name="chkArts">Arts</string>
+    <string name="chkFashionStyle">Fashion and Style</string>
+    <string name="chkSports">Sports</string>
+    <string name="btnSave">Save</string>
 </resources>

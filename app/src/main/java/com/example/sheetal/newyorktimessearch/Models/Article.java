@@ -1,16 +1,15 @@
-package com.example.sheetal.newyorktimessearch;
+package com.example.sheetal.newyorktimessearch.Models;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.Serializable;
+import org.parceler.Parcel;
 import java.util.ArrayList;
 
-/**
- * Created by sheetal on 7/28/16.
- */
-public class Article implements Serializable{
+
+@Parcel
+public class Article
+{
 
     public String getWebUrl() {
         return webUrl;
@@ -28,6 +27,10 @@ public class Article implements Serializable{
     String headLine;
     String thumbNail;
 
+    public Article()
+    {
+
+    }
 
     public  Article(JSONObject object) throws JSONException {
         this.webUrl= object.getString("web_url");
