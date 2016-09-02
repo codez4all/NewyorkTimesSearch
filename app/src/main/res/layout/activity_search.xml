@@ -12,7 +12,6 @@
     tools:context=".Activities.SearchActivity">
 
 
-
    <!-- <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:minHeight="?attr/actionBarSize"
@@ -24,30 +23,10 @@
 -->
 
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/etQuery"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/btnSearch"
-        android:hint="@string/hint"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/Search"
-        android:id="@+id/btnSearch"
-        android:layout_alignTop="@+id/etQuery"
-        android:layout_alignParentEnd="true"
-        android:onClick="onArticleSearch"
-        android:background="@color/colorPurple"
-        android:textColor="@color/colorWhite"/>
-
     <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/gvResults"
-        android:layout_below="@+id/btnSearch"
         android:layout_alignParentStart="true"
         android:numColumns="4"/>
 </RelativeLayout>

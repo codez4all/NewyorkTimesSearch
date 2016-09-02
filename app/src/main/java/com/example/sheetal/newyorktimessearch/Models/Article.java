@@ -1,5 +1,7 @@
 package com.example.sheetal.newyorktimessearch.Models;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,6 +63,8 @@ public class Article
         {
             e.printStackTrace();
         }
+
+        Log.d("DEBUG", "Result Count "+ array.length());
 
         return  result;
     }

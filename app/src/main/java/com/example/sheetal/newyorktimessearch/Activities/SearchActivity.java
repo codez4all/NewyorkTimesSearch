@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -39,14 +39,14 @@ import cz.msebera.android.httpclient.Header;
 
 public class SearchActivity extends AppCompatActivity {
 
-    @BindView(R.id.etQuery) EditText etQuery;
     @BindView(R.id.gvResults) GridView gvResults;
-    @BindView(R.id.btnSearch) Button btnSearch;
     ArrayList<Article> articles;
     ArticleArrayAdaptor adaptor;
     private final int REQUEST_CODE = 200;
     SettingData filterData;
     String[] array = new String[]{"newest","oldest"};
+    SearchView searchView;
+    String searchText= "";
 
 
     @Override
@@ -81,12 +81,17 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to your AdapterView
-                customLoadMoreDataFromApi(page);
-                // or customLoadMoreDataFromApi(totalItemsCount);
+
+                onArticleSearch(searchText, page);
+                Log.d("DEBUG", "Search Page:" + page);
+                Log.d("DEBUG", "Search Query:" + searchText);
+                //Log.d("DEBUG","Search view:"+ searchView.getQuery());
+
                 return true; // ONLY if more data is actually being loaded; false otherwise.
 
             }
         });
+
 
     }
 
@@ -94,6 +99,27 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
        getMenuInflater().inflate(R.menu.menu_search, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                searchText = query;
+                adaptor.clear();
+                onArticleSearch(query,0);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        });
+
         return  true;
     }
 
@@ -125,95 +151,45 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    // Append more data into the adapter
-    public void customLoadMoreDataFromApi(int offset) {
-        // This method probably sends out a network request and appends new data items to your adapter.
-        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
-        // Deserialize API response and then construct new objects to append to the adapter
 
-
-        final String query= etQuery.getText().toString();
-        //Toast.makeText(SearchActivity.this, "Searching for "+query, Toast.LENGTH_SHORT).show();
-        AsyncHttpClient client = new AsyncHttpClient();
-        String url = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
-
-        RequestParams params= new RequestParams();
-        params.put("api-key","dd76f7cbcac0488486de34b0c7ca5155");
-        params.put("page",offset);
-        params.put("q", query);
-
-        //apply more filters params
-        if(filterData != null)
-        {
-            params.put("begin_date",filterData.getBeginDate().replace("/",""));
-            params.put("sort",array[filterData.getSortOrderPosition()]);
-
-            String new_desk_val =   filterData.isCheckedArts()
-                    + filterData.isCheckedFashionStyle()
-                    + filterData.isCheckedSports();
-
-            params.put("news_desk",new_desk_val);
-        }
-
-        client.get(url, params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-
-                JSONArray articleResults = null;
-
-                try {
-                    articleResults = response.getJSONObject("response").getJSONArray("docs");
-                    adaptor.addAll(Article.fromJSONArray(articleResults));
-                    Log.d("Debug", articles.toString());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    ;
-                }
-
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
-
-                Log.d("Debug", "Api request failed");
-            }
-        });
-
-    }
-
-    public void onArticleSearch(View view) {
+    public void onArticleSearch(String query, int offset) {
 
         boolean isInternetAvailable  =isNetworkAvailable();
         boolean isOnline = isOnline();
 
         if(isInternetAvailable && isOnline ) {
-            final String query = etQuery.getText().toString();
+            //final String query = etQuery.getText().toString();
             //Toast.makeText(SearchActivity.this, "Searching for "+query, Toast.LENGTH_SHORT).show();
             AsyncHttpClient client = new AsyncHttpClient();
             String url = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
 
             RequestParams params = new RequestParams();
             params.put("api-key", "dd76f7cbcac0488486de34b0c7ca5155");
-            params.put("page", 0);
+            params.put("page", offset);
             params.put("q", query);
 
             //apply more filters params
             if(filterData != null)
             {
-                params.put("begin_date",filterData.getBeginDate().replace("/",""));
-                params.put("sort",array[filterData.getSortOrderPosition()]);
+                params.put("begin_date", filterData.getBeginDate().replace("/", ""));
+                params.put("sort", array[filterData.getSortOrderPosition()]);
 
-                String new_desk_val =   filterData.isCheckedArts()
-                                        + filterData.isCheckedFashionStyle()
-                                        + filterData.isCheckedSports();
+                StringBuffer news_desk = new StringBuffer();
+                news_desk.append("news_desk:" + filterData.isCheckedArts());
+                news_desk.append(" or news_desk:" + filterData.isCheckedFashionStyle());
+                news_desk.append(" or news_desk:" + filterData.isCheckedSports());
 
-                params.put("news_desk",new_desk_val);
+                params.put("fq",news_desk.toString());
+
             }
 
             client.get(url, params, new JsonHttpResponseHandler() {
+                @Override
+                public void onStart() {
+                    super.onStart();
+                    Log.d("DEBUG",this.getRequestURI().toString());
+                }
+
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
@@ -221,13 +197,14 @@ public class SearchActivity extends AppCompatActivity {
                     JSONArray articleResults = null;
 
                     try {
+                        //adaptor.clear(); //clear previous search
                         articleResults = response.getJSONObject("response").getJSONArray("docs");
                         adaptor.addAll(Article.fromJSONArray(articleResults));
                         Log.d("Debug", articles.toString());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        ;
+
                     }
 
                 }
