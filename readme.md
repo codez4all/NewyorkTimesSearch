@@ -47,9 +47,11 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='NYtimes.gif' title='New York Times Search Video Walkthrough' width='' alt='New York Times Search Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
+
+Used Vysor to show an Android device on desktop [Vysor](https://www.vysor.io/)
 
 ## Notes
 
