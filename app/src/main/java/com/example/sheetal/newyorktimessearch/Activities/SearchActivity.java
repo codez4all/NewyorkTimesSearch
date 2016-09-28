@@ -100,41 +100,6 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-//        gvResults.setAdapter(adaptor);
-//
-//        //item click listener on gridview
-//        gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                Intent i = new Intent(SearchActivity.this,ArticleActivity.class);
-//                Article article = articles.get(position);
-//                i.putExtra("article", Parcels.wrap(article));
-//                startActivity(i);
-//            }
-//        });
-//
-//
-//        gvResults.setOnScrollListener(new EndlessScrollListener() {
-//            @Override
-//            public boolean onLoadMore(int page, int totalItemsCount) {
-//                // Triggered only when new data needs to be appended to the list
-//                // Add whatever code is needed to append new items to your AdapterView
-//
-//                onArticleSearch(searchText, page);
-//                Log.d("DEBUG", "Search Page:" + page);
-//                Log.d("DEBUG", "Search Query:" + searchText);
-//                //Log.d("DEBUG","Search view:"+ searchView.getQuery());
-//
-//                return true; // ONLY if more data is actually being loaded; false otherwise.
-//
-//            }
-//        });
-
-
     }
 
 
@@ -149,7 +114,11 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
 
                 searchText = query;
-                //adaptor.clear();
+
+                //clear previous search
+                articles.clear();
+                recycleAdapter.notifyDataSetChanged();
+
                 onArticleSearch(query,0);
                 searchView.clearFocus();
                 return true;
@@ -240,14 +209,11 @@ public class SearchActivity extends AppCompatActivity {
                     JSONArray articleResults = null;
 
                     try {
-                        //adaptor.clear(); //clear previous search
+
+                        int curSize = recycleAdapter.getItemCount();
                         articleResults = response.getJSONObject("response").getJSONArray("docs");
-
                         articles.addAll(Article.fromJSONArray(articleResults));
-                        //adaptor.addAll(Article.fromJSONArray(articleResults));
-                        recycleAdapter.notifyDataSetChanged();
-
-                        Log.d("Debug", articles.toString());
+                        recycleAdapter.notifyItemRangeInserted(curSize,articles.size());
 
                     } catch (JSONException e) {
                         e.printStackTrace();
