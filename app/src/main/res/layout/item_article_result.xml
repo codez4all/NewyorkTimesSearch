@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content">
@@ -8,8 +9,8 @@
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:id="@+id/ivImage"
-        android:src="@mipmap/ic_launcher"
-        android:scaleType="center"/>
+        android:src="@drawable/image_placeholder_article"
+        />
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"

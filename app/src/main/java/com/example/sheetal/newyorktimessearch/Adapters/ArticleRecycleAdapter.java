@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.sheetal.newyorktimessearch.models.Article;
 import com.example.sheetal.newyorktimessearch.R;
+import com.example.sheetal.newyorktimessearch.models.Article;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -71,13 +71,18 @@ public class ArticleRecycleAdapter extends RecyclerView.Adapter<ArticleRecycleAd
         ImageView imgView = holder.imageView;
         TextView tvTitle = holder.tvTitle;
 
-        imgView.setImageResource(0);
         tvTitle.setText(article.getHeadLine());
 
         String thumbNail = article.getThumbNail();
-        if(!TextUtils.isEmpty(thumbNail))
-        {
-            Picasso.with(getContext()).load(thumbNail).into(imgView);
+        if(!TextUtils.isEmpty(thumbNail)) {
+
+            imgView.setImageResource(0);
+            Picasso.with(getContext()).load(thumbNail)
+                    .fit()
+                    .centerCrop()
+                    .placeholder(R.drawable.image_placeholder_article)
+                    .error(R.drawable.image_placeholder_article)
+                    .into(imgView);
         }
 
     }
