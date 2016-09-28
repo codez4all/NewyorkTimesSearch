@@ -12,4 +12,6 @@
     <string name="chkFashionStyle">Fashion and Style</string>
     <string name="chkSports">Sports</string>
     <string name="btnSave">Save</string>
+    <string name="share">Share</string>
+    <string name="settings">Settings</string>
 </resources>

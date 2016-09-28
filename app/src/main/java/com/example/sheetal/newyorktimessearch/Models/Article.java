@@ -1,4 +1,4 @@
-package com.example.sheetal.newyorktimessearch.Models;
+package com.example.sheetal.newyorktimessearch.models;
 
 import android.util.Log;
 

@@ -1,4 +1,4 @@
-package com.example.sheetal.newyorktimessearch.Activities;
+package com.example.sheetal.newyorktimessearch.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,20 +7,21 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
-import com.example.sheetal.newyorktimessearch.Adapters.ArticleArrayAdaptor;
-import com.example.sheetal.newyorktimessearch.EndlessScrollListener;
-import com.example.sheetal.newyorktimessearch.Models.Article;
-import com.example.sheetal.newyorktimessearch.Models.SettingData;
 import com.example.sheetal.newyorktimessearch.R;
+import com.example.sheetal.newyorktimessearch.adapters.ArticleRecycleAdapter;
+import com.example.sheetal.newyorktimessearch.listeners.EndlessRecyclerViewScrollListener;
+import com.example.sheetal.newyorktimessearch.models.Article;
+import com.example.sheetal.newyorktimessearch.models.SettingData;
+import com.example.sheetal.newyorktimessearch.utils.ItemClickSupport;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -39,9 +40,11 @@ import cz.msebera.android.httpclient.Header;
 
 public class SearchActivity extends AppCompatActivity {
 
-    @BindView(R.id.gvResults) GridView gvResults;
+   // @BindView(R.id.gvResults) GridView gvResults;
+    @BindView(R.id.rvResults) RecyclerView rvResults;
     ArrayList<Article> articles;
-    ArticleArrayAdaptor adaptor;
+   // ArticleArrayAdaptor adaptor;
+    ArticleRecycleAdapter recycleAdapter;
     private final int REQUEST_CODE = 200;
     SettingData filterData;
     String[] array = new String[]{"newest","oldest"};
@@ -59,26 +62,34 @@ public class SearchActivity extends AppCompatActivity {
        /* Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
+
         articles = new ArrayList<>();
-        adaptor = new ArticleArrayAdaptor(this,articles);
-        gvResults.setAdapter(adaptor);
+        //adaptor = new ArticleArrayAdaptor(this,articles);
+        recycleAdapter = new ArticleRecycleAdapter(this,articles);
+        rvResults.setAdapter(recycleAdapter);
 
-        //item click listener on gridview
-        gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        StaggeredGridLayoutManager staggeredGridLayoutManager =
+                new StaggeredGridLayoutManager(4,StaggeredGridLayoutManager.VERTICAL);
+        rvResults.setLayoutManager(staggeredGridLayoutManager);
+
+
+        ItemClickSupport.addTo(rvResults).setOnItemClickListener(
+                new ItemClickSupport.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 Intent i = new Intent(SearchActivity.this,ArticleActivity.class);
                 Article article = articles.get(position);
                 i.putExtra("article", Parcels.wrap(article));
                 startActivity(i);
             }
+
         });
 
 
-        gvResults.setOnScrollListener(new EndlessScrollListener() {
+        rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(staggeredGridLayoutManager) {
             @Override
-            public boolean onLoadMore(int page, int totalItemsCount) {
+            public void onLoadMore(int page, int totalItemsCount) {
+
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to your AdapterView
 
@@ -86,11 +97,42 @@ public class SearchActivity extends AppCompatActivity {
                 Log.d("DEBUG", "Search Page:" + page);
                 Log.d("DEBUG", "Search Query:" + searchText);
                 //Log.d("DEBUG","Search view:"+ searchView.getQuery());
-
-                return true; // ONLY if more data is actually being loaded; false otherwise.
-
             }
         });
+
+
+
+
+//        gvResults.setAdapter(adaptor);
+//
+//        //item click listener on gridview
+//        gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                Intent i = new Intent(SearchActivity.this,ArticleActivity.class);
+//                Article article = articles.get(position);
+//                i.putExtra("article", Parcels.wrap(article));
+//                startActivity(i);
+//            }
+//        });
+//
+//
+//        gvResults.setOnScrollListener(new EndlessScrollListener() {
+//            @Override
+//            public boolean onLoadMore(int page, int totalItemsCount) {
+//                // Triggered only when new data needs to be appended to the list
+//                // Add whatever code is needed to append new items to your AdapterView
+//
+//                onArticleSearch(searchText, page);
+//                Log.d("DEBUG", "Search Page:" + page);
+//                Log.d("DEBUG", "Search Query:" + searchText);
+//                //Log.d("DEBUG","Search view:"+ searchView.getQuery());
+//
+//                return true; // ONLY if more data is actually being loaded; false otherwise.
+//
+//            }
+//        });
 
 
     }
@@ -107,7 +149,7 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
 
                 searchText = query;
-                adaptor.clear();
+                //adaptor.clear();
                 onArticleSearch(query,0);
                 searchView.clearFocus();
                 return true;
@@ -119,6 +161,7 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
 
         return  true;
     }
@@ -199,7 +242,11 @@ public class SearchActivity extends AppCompatActivity {
                     try {
                         //adaptor.clear(); //clear previous search
                         articleResults = response.getJSONObject("response").getJSONArray("docs");
-                        adaptor.addAll(Article.fromJSONArray(articleResults));
+
+                        articles.addAll(Article.fromJSONArray(articleResults));
+                        //adaptor.addAll(Article.fromJSONArray(articleResults));
+                        recycleAdapter.notifyDataSetChanged();
+
                         Log.d("Debug", articles.toString());
 
                     } catch (JSONException e) {

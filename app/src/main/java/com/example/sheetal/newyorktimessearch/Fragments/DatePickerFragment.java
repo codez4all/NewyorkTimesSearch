@@ -1,4 +1,4 @@
-package com.example.sheetal.newyorktimessearch.Fragments;
+package com.example.sheetal.newyorktimessearch.fragments;
 
 
 import android.app.DatePickerDialog;

@@ -3,21 +3,14 @@
       xmlns:tools="http://schemas.android.com/tools" tools:context=".BookSearchActivity">
 
     <item android:id="@+id/action_search"
-
           android:orderInCategory="5"
-
-          android:title="Search"
-
+          android:title="@string/Search"
           android:icon="@android:drawable/ic_menu_search"
-
           app:showAsAction="ifRoom|collapseActionView"
-
           app:actionViewClass="android.support.v7.widget.SearchView" />
 
     <item android:id="@+id/action_setting"
-          android:title="Settings"
-          app:showAsAction="collapseActionView"
-          />
-
+          android:title="@string/settings"
+          app:showAsAction="collapseActionView" />
 
 </menu>

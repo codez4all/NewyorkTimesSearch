@@ -1,4 +1,4 @@
-package com.example.sheetal.newyorktimessearch.Adapters;
+package com.example.sheetal.newyorktimessearch.adapters;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.sheetal.newyorktimessearch.Models.Article;
+import com.example.sheetal.newyorktimessearch.models.Article;
 import com.example.sheetal.newyorktimessearch.R;
 import com.squareup.picasso.Picasso;
 

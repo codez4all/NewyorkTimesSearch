@@ -1,4 +1,4 @@
-package com.example.sheetal.newyorktimessearch.Activities;
+package com.example.sheetal.newyorktimessearch.activities;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -11,8 +11,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.sheetal.newyorktimessearch.Fragments.DatePickerFragment;
-import com.example.sheetal.newyorktimessearch.Models.SettingData;
+import com.example.sheetal.newyorktimessearch.fragments.DatePickerFragment;
+import com.example.sheetal.newyorktimessearch.models.SettingData;
 import com.example.sheetal.newyorktimessearch.R;
 
 import java.text.DateFormat;

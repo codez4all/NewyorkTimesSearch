@@ -1,4 +1,4 @@
-package com.example.sheetal.newyorktimessearch;
+package com.example.sheetal.newyorktimessearch.listeners;
 
 import android.widget.AbsListView;
 
